@@ -16,7 +16,13 @@ public class Kuir {
 			String xmlFileName = args[1];
 			MakeKeyword mk = new MakeKeyword();
 			mk.main(xmlFileName);
-		} else {
+		} 
+		else if(args[0].equals("-i")) {
+			String indexFileName = args[1];
+			Indexer ix = new Indexer();
+			ix.xmltopost(indexFileName);
+		}
+		else {
 			System.out.println("Invalid argument.");
 		}
 	}
