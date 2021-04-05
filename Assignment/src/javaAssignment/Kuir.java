@@ -22,6 +22,12 @@ public class Kuir {
 			Indexer ix = new Indexer();
 			ix.xmltopost(indexFileName);
 		}
+		else if(args[0].equals("-s") && args[2].equals("-q")) {
+			String queryFileName = args[1];
+			String query = args[3];
+			Searcher sc = new Searcher();
+			sc.calcSim(queryFileName, query);
+		}
 		else {
 			System.out.println("Invalid argument.");
 		}
