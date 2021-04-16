@@ -59,12 +59,13 @@ public class Searcher {
 						for (int j = 0; j < 5; j++) {
 							if (Integer.parseInt(postValue.get(i)) == j) {
 								double postValueCal = Double.parseDouble(postValue.get(i + 1));
-								innerProduct += (double) (kwrdMap.get(key) * kwrdMap.get(key));
 								innerProductArr[j] +=postValueCal * postValueCal;
 							}
 						}
+						
+						
 					}
-					
+					innerProduct += (double) (kwrdMap.get(key) * kwrdMap.get(key));	
 				}
 			}
 			innerProduct = Math.sqrt(innerProduct);
@@ -73,14 +74,15 @@ public class Searcher {
 			for(int i=0;i<innerProductArr.length;i++) {
 				innerProductArr[i] = Math.sqrt(innerProductArr[i]);
 			}
+			
 			for(int i=0;i<calcSimArr.length;i++) {
 				calcSimArr[i] = featureArr[i]/(innerProduct * innerProductArr[i]);
-				if(Double.isInfinite(calcSimArr[i]))
+				if(Double.isNaN(calcSimArr[i]))
 					innerProductMap.put(i, 0.0);
 				else
 					innerProductMap.put(i, calcSimArr[i]);
 			}
-
+			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse("src/collection.xml");
@@ -94,6 +96,7 @@ public class Searcher {
 		
 			List<Integer> keySetList = new ArrayList<>(innerProductMap.keySet());
 			Collections.sort(keySetList, (o1, o2) -> (innerProductMap.get(o2).compareTo(innerProductMap.get(o1))));
+			
 			int count =0;
 			for (Integer key : keySetList) {
 				if (count == 3)
@@ -122,8 +125,6 @@ public class Searcher {
 		}
 	}
 
-
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public double[] innerProduct(String postfileName, String query) {
 		try {
@@ -145,10 +146,6 @@ public class Searcher {
 			HashMap postMap = (HashMap) object;
 			Iterator<String> it = postMap.keySet().iterator();
 			
-//			HashMap<Integer,Double> innerProductMap = new HashMap();
-//			for(int i=0;i<5;i++) {
-//				innerProductMap.put(i, 0.0);
-//			}
 			double innerProductArr [] = {0,0,0,0,0};
 			
 			while(it.hasNext()) {
@@ -161,36 +158,11 @@ public class Searcher {
 								double postValueCal = Double.parseDouble(postValue.get(i + 1));
 								double innerProduct = (int) kwrdMap.get(key) * postValueCal;
 								innerProductArr[j] +=innerProduct;
-								//innerProductMap.put(j, innerProductArr[j]);
 							}
 						}
 					}
 				}
 			}
-			
-//			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder builder = factory.newDocumentBuilder();
-//			Document doc = builder.parse("src/collection.xml");
-//			Element root = doc.getDocumentElement();
-//            NodeList children = root.getChildNodes();
-//            String titleList[] = new String[5];
-//			for(int i=0;i<children.getLength();i++) {
-//				Node node = children.item(i).getFirstChild();
-//				titleList[i] = node.getTextContent();
-//			}
-//			
-//			List<Integer> keySetList = new ArrayList<>(innerProductMap.keySet());
-//			Collections.sort(keySetList, (o1, o2) -> (innerProductMap.get(o2).compareTo(innerProductMap.get(o1))));
-//			int count =0;
-//			for (Integer key : keySetList) {
-//				if (count == 3)
-//					break;
-//				if (innerProductMap.get(key) != 0) {
-//					Double mapValue = (Double) innerProductMap.get(key);
-//					System.out.println(titleList[key] + " : " + Math.round(mapValue*100)/100.0);
-//					count++;
-//				}
-//			}
 			return innerProductArr;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -202,13 +174,6 @@ public class Searcher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		} catch (SAXException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ParserConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		return null;
 	}
 }
