@@ -69,7 +69,7 @@ public class Searcher {
 			}
 			innerProduct = Math.sqrt(innerProduct);
 			double calcSimArr[] = {0,0,0,0,0};
-			double featureArr[] = InnerProduct();
+			double featureArr[] = {35,35,35,35,35};
 			for(int i=0;i<innerProductArr.length;i++) {
 				innerProductArr[i] = Math.sqrt(innerProductArr[i]);
 			}
@@ -91,7 +91,7 @@ public class Searcher {
 				Node node = children.item(i).getFirstChild();
 				titleList[i] = node.getTextContent();
 			}
-
+		
 			List<Integer> keySetList = new ArrayList<>(innerProductMap.keySet());
 			Collections.sort(keySetList, (o1, o2) -> (innerProductMap.get(o2).compareTo(innerProductMap.get(o1))));
 			int count =0;
@@ -120,9 +120,5 @@ public class Searcher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	public double[] InnerProduct() {
-		double tempArr[] = {35,35,35,35,35};
-		return tempArr;
 	}
 }
